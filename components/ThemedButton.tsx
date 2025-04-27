@@ -1,7 +1,11 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, ViewStyle } from "react-native";
 import { Colors } from "../constants/Colors";
 
-function ThemedButton({ style, ...props }: any) {
+type ThemedButtonProps = React.ComponentProps<typeof Pressable> & {
+  style?: ViewStyle | ViewStyle[];
+};
+
+function ThemedButton({ style, ...props }: ThemedButtonProps) {
   return (
     <Pressable
       style={(pressed) => [styles.btn, pressed && styles.pressed, style]}

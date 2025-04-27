@@ -1,7 +1,9 @@
 import { StyleSheet, useColorScheme, View } from "react-native";
 import { Colors } from "../constants/Colors";
 
-const ThemedCard = ({ style, ...props }: any) => {
+type ThemedCardProps = React.ComponentProps<typeof View>;
+
+const ThemedCard = ({ style, ...props }: ThemedCardProps) => {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
 
