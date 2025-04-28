@@ -11,19 +11,21 @@ import ThemedText from "../../components/ThemedText";
 import Spacer from "../../components/Spacer";
 import ThemedButton from "../../components/ThemedButton";
 import ThemedTextInput from "../../components/ThemedTextInput";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useUser from "../../hooks/useUser";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    setEmail("");
-    setPassword("");
-  }, []);
+  const { login } = useUser();
 
-  function handleSubmit() {
-    console.log(`login form submitted, ${email}, ${password}`);
+  async function handleSubmit() {
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

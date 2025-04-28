@@ -10,19 +10,22 @@ import Spacer from "../../components/Spacer";
 import { Link } from "expo-router";
 import ThemedButton from "../../components/ThemedButton";
 import ThemedTextInput from "../../components/ThemedTextInput";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useUser from "../../hooks/useUser";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    setEmail("");
-    setPassword("");
-  }, []);
+  const { register } = useUser();
 
-  function handleSubmit() {
-    console.log(`register form submitted, ${email}, ${password}`);
+  async function handleSubmit() {
+    try {
+      await register(email, password);
+      console.log("registered");
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
