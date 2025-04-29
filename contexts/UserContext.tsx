@@ -27,8 +27,8 @@ export function UserProvider({ children }: UserContextProps) {
       const response = await account.get();
 
       setUser(response);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw Error(error.message);
     }
   }
 
