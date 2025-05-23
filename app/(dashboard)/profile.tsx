@@ -2,16 +2,24 @@ import { StyleSheet } from "react-native";
 import Spacer from "../../components/Spacer";
 import ThemedText from "../../components/ThemedText";
 import ThemedView from "../../components/ThemedView";
+import useUser from "../../hooks/useUser";
+import ThemedButton from "../../components/ThemedButton";
 
 function Profile() {
+  const { logout, user } = useUser();
+
   return (
     <ThemedView style={styles.container}>
       <ThemedText title style={styles.heading}>
-        Your Email
+        {user?.email ? user?.email : "Your email"}
       </ThemedText>
       <Spacer />
       <ThemedText>Time to start reading some books...</ThemedText>
       <Spacer />
+
+      <ThemedButton onPress={logout}>
+        <ThemedText>Logout</ThemedText>
+      </ThemedButton>
     </ThemedView>
   );
 }
