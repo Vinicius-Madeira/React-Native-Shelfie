@@ -1,9 +1,9 @@
 import { Client, Account, Avatars, Databases } from "react-native-appwrite";
 
 export const client = new Client()
-  .setEndpoint("https://fra.cloud.appwrite.io/v1")
-  .setProject("680b6f9100212722089a")
-  .setPlatform("com.vinimad.shelfie");
+  .setEndpoint(process.env.EXPO_PUBLIC_API_URL!)
+  .setProject(process.env.EXPO_PUBLIC_PROJECT_ID!)
+  .setPlatform(process.env.EXPO_PUBLIC_PLATFORM_ID!);
 
 export const account = new Account(client);
 export const avatars = new Avatars(client);
