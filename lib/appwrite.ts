@@ -1,9 +1,10 @@
 import { Client, Account, Avatars, Databases } from "react-native-appwrite";
+import { API_URL, PROJECT_ID, PLATFORM_ID } from "../constants/env";
 
 export const client = new Client()
-  .setEndpoint(process.env.EXPO_PUBLIC_API_URL!)
-  .setProject(process.env.EXPO_PUBLIC_PROJECT_ID!)
-  .setPlatform(process.env.EXPO_PUBLIC_PLATFORM_ID!);
+  .setEndpoint(API_URL)
+  .setProject(PROJECT_ID)
+  .setPlatform(PLATFORM_ID);
 
 export const account = new Account(client);
 export const avatars = new Avatars(client);
