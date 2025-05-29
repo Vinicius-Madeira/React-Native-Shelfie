@@ -1,8 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { PropsWithChildren } from "react";
 import { databases } from "../lib/appwrite";
 import { COLLECTION_ID, DATABASE_ID } from "../constants/env";
-import { ID, Permission, Role } from "react-native-appwrite";
+import { ID, Permission, Query, Role } from "react-native-appwrite";
 import useUser from "../hooks/useUser";
 
 interface Book {
@@ -13,7 +13,7 @@ interface Book {
 
 interface BooksContextType {
   books: Book[] | null;
-  fetchBooks: () => Promise<Book[] | null>;
+  fetchBooks: () => void;
   fetchBookById: (id: string) => Promise<Book | null>;
   createBook: (book: Book) => void;
   deleteBook: (id: string) => Promise<Book | null>;
@@ -38,12 +38,24 @@ export function BooksProvider({ children }: BooksContextProps) {
     console.error("Error initializing BooksProvider:", error);
   }
 
-  async function fetchBooks(): Promise<Book[] | null> {
+  async function fetchBooks(): Promise<void> {
+    if (!user) {
+      console.error("User is not authenticated");
+      return;
+    }
+
     try {
-      return null;
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID,
+        [Query.equal("userId", user.$id)]
+      );
+
+      setBooks(response.documents as unknown as Book[]);
+      console.log(response.documents);
     } catch (error) {
-      console.error("Failed to fetch book:", error);
-      return null;
+      console.error("Failed to fetch books:", error);
+      return;
     }
   }
 
@@ -98,6 +110,14 @@ export function BooksProvider({ children }: BooksContextProps) {
       return null;
     }
   }
+
+  useEffect(() => {
+    if (user) {
+      fetchBooks();
+    } else {
+      setBooks(null);
+    }
+  }, [user]);
 
   return (
     <BooksContext.Provider

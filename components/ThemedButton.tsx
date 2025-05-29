@@ -8,7 +8,7 @@ type ThemedButtonProps = React.ComponentProps<typeof Pressable> & {
 function ThemedButton({ style, ...props }: ThemedButtonProps) {
   return (
     <Pressable
-      style={(pressed) => [styles.btn, pressed && styles.pressed, style]}
+      style={({ pressed }) => [styles.btn, pressed && styles.pressed, style]}
       {...props}
     />
   );
