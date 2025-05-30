@@ -6,6 +6,7 @@ import { ID, Permission, Query, Role } from "react-native-appwrite";
 import useUser from "../hooks/useUser";
 
 interface Book {
+  $id: string;
   title: string;
   author: string;
   description: string;
