@@ -6,10 +6,19 @@ import ThemedCard from "../../components/ThemedCard";
 import useBooks from "../../hooks/useBooks";
 import { Colors } from "../../constants/Colors";
 import { useRouter } from "expo-router";
+import ThemedLoader from "../../components/ThemedLoader";
 
 function Books() {
   const { books } = useBooks();
   const router = useRouter();
+
+  if (!books) {
+    return (
+      <ThemedView style={styles.container} safe>
+        <ThemedLoader />
+      </ThemedView>
+    );
+  }
 
   return (
     <ThemedView style={styles.container} safe>

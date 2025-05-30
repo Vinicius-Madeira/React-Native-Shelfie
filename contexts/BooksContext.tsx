@@ -5,7 +5,7 @@ import { COLLECTION_ID, DATABASE_ID } from "../constants/env";
 import { ID, Permission, Query, Role } from "react-native-appwrite";
 import useUser from "../hooks/useUser";
 
-interface Book {
+export interface Book {
   $id: string;
   title: string;
   author: string;
@@ -62,12 +62,13 @@ export function BooksProvider({ children }: BooksContextProps) {
 
   async function fetchBookById(id: string): Promise<Book | null> {
     try {
-      const response = await fetch(`https://api.example.com/books/${id}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const book: Book = await response.json();
-      return book;
+      const response = await databases.getDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        id
+      );
+
+      return response as unknown as Book;
     } catch (error) {
       console.error("Failed to fetch book:", error);
       return null;
