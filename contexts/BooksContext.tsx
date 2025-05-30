@@ -17,7 +17,7 @@ interface BooksContextType {
   fetchBooks: () => void;
   fetchBookById: (id: string) => Promise<Book | null>;
   createBook: (book: Book) => void;
-  deleteBook: (id: string) => Promise<Book | null>;
+  deleteBook: (id: string) => void;
 }
 
 export const BooksContext = createContext<BooksContextType>({
@@ -101,12 +101,8 @@ export function BooksProvider({ children }: BooksContextProps) {
 
   async function deleteBook(id: string) {
     try {
-      const response = await fetch(`https://api.example.com/books/${id}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const book: Book = await response.json();
-      return book;
+      await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+      console.log("Book deleted successfully");
     } catch (error) {
       console.error("Failed to delete book:", error);
       return null;
@@ -125,6 +121,11 @@ export function BooksProvider({ children }: BooksContextProps) {
 
         if (events[0].includes("create")) {
           setBooks((prevBooks) => [...prevBooks, payload as Book]);
+        }
+        if (events[0].includes("delete")) {
+          setBooks((prevBooks) =>
+            prevBooks.filter((book) => book.$id !== payload.$id)
+          );
         }
       });
     } else {
